@@ -1,0 +1,25 @@
+name: Deploy to Github Pages
+#Run workflow on every push to the master branch
+on:
+  push:
+    branches: [ master ]
+jobs:
+  deploy-to-github-pages:
+     #use ubuntu-latest image to run steps on
+       runs-on: ubuntu-latest
+       steps:
+         #uses github checkout action to checkout code from the master branch
+           - uses: actions/checkout@v2
+             #sets up .net 5 sdk
+           - name: Setup .NET 5.0 SDK
+             uses: actions/setup-dotnet@1.7.2
+             with:
+               dotnet-version: 5.0
+           - name: Publish .Net Project
+             run: dotnet publish CeraUnaVolta.sln -c Release -o release --nologo
+           - name: Commit wwwroot to Github Pages
+             uses: JamesIves/github-pages-deploy-action@3.7.1
+             with:
+               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+               BRANCH: gh_pages
+               FOLDER: release/wwwroot

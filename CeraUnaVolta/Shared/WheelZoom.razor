@@ -1,0 +1,76 @@
+﻿
+@inject IJSRuntime JSRuntime
+@*<p>@X</p>
+    <p>@Y</p>*@
+
+<img @ref=imgElement
+     @onpointerdown=OnPointerDown @onpointerdown:preventDefault
+     @onpointerup=OnPointerUp @onpointerup:preventDefault
+     @onpointermove=OnPointerMove @onpointermove:preventDefault
+     @onwheel=OnWheel @onwheel:stopPropagation @onwheel:preventDefault
+     @onload="OnImageLoaded"
+     @attributes=AllOtherAttributes
+     src="@src" />
+
+@code {
+
+    /*
+        Parameters
+    */
+    ElementReference imgElement;
+
+    [Parameter]
+    public string Image { get; set; }
+
+    [Parameter]
+    public double? ImageWidth { get; set; }
+    [Parameter]
+    public EventCallback<double?> ImageWithChanged { get; set; }
+
+    [Parameter]
+    public double? ImageHeight { get; set; }
+    [Parameter]
+    public EventCallback<double?> ImageHeightChanged { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AllOtherAttributes { get; set; }
+
+    public string src { get; set; }
+
+    /*
+        Event handlers
+    */
+    void OnPointerDown(PointerEventArgs e)
+    {
+
+    }
+
+    void OnPointerUp(PointerEventArgs e)
+    {
+
+    }
+
+    void OnPointerMove(PointerEventArgs e)
+    {
+
+    }
+
+    void OnWheel(WheelEventArgs e)
+    {
+
+    }
+
+    void OnImageLoaded(ProgressEventArgs e)
+    {
+
+    }
+
+    /*
+        Methods
+    */
+    protected override void OnInitialized()
+    {
+        src = Image;
+    }
+
+}

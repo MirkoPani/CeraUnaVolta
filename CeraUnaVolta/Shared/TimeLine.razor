@@ -1,0 +1,96 @@
+﻿<div id="lineCont">
+    <div id="line">
+        @for(var i=0; i<Dates.Count;i++)
+        {
+            <div class="circle" id="circle0" style="@DatesStylePosition[i]">
+                <div class="date">@Dates[i]</div>
+            </div>        
+        }
+
+    </div>
+    <div id="span">Date Placeholder</div>
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public List<string> Dates { get; set; }
+
+    public List<string> DatesStylePosition { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (Dates == null || Dates.Count == 0)
+        {
+            DatesStylePosition = new List<string>();
+            return;
+        }
+
+        DatesStylePosition = new List<string>(Dates.Count);
+
+        int basePercentage = 100 / (Dates.Count - 1);
+
+        for(var i = 0; i< Dates.Count;i++)
+        {
+            DatesStylePosition.Add(string.Format("left: {0}%;", basePercentage * i));
+        }
+
+    }
+
+}
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    #lineCont {
+        width: 100%;
+        height: 20%;
+    }
+
+    #line {
+        height: 6px;
+        width: 70%;
+        background: white;
+        border-radius: 5px;
+        margin: auto;
+        top: 50%;
+        transform: translateY(-50%);
+        position: relative;
+    }
+
+    #span {
+        display: none;
+        width: 70%;
+        margin: auto;
+        margin-top: 25%;
+        text-align: center;
+        color: #b38c52;
+    }
+
+    .circle {
+        width: 20px;
+        height: 20px;
+        background: #b38c52;
+        border-radius: 15px;
+        position: absolute;
+        top: -7px;
+        border: 3px solid white;
+        cursor: pointer;
+    }
+
+    .date {
+        width: auto;
+        height: auto;
+        white-space: nowrap;
+        color: #b38c52;
+        position: absolute;
+        top: 20px;
+        left: -12px;
+        display: block;
+        transition: all 0.1s ease-out;
+    }
+</style>

@@ -1,7 +1,21 @@
-﻿@page "/"
+﻿@layout FullPage
+@page "/"
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<div class="container-fluid">
+    <div class="row mb-3">
+        <TimeLine Dates=@Dates></TimeLine>
+    </div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    <div class="row">
+
+       
+    </div>
+
+</div>
+    
+
+
+@code {
+    private List<string> Dates = new List<string>() { "1944", "1957","1980", "2000" };
+}

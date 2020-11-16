@@ -12,7 +12,6 @@
     const elem = document.getElementById('scene')
     const panzoom = Panzoom(elem, {
         maxScale: 5,
-        contain: 'outside',
         startScale: 1.5
     })
 

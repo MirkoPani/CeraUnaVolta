@@ -1,14 +1,16 @@
-﻿<div id="lineCont">
-    <div id="line">
-        @for(var i=0; i<Dates.Count;i++)
-        {
-            <div class="circle" id="circle0" style="@DatesStylePosition[i]">
-                <div class="date">@Dates[i]</div>
-            </div>        
-        }
+﻿<div @attributes=AllOtherAttributes>
+    <div id="lineCont">
+        <div id="line">
+            @for (var i = 0; i < Dates.Count; i++)
+            {
+                <div class="circle" id="circle0" style="@DatesStylePosition[i]">
+                    <div class="date">@Dates[i]</div>
+                </div>
+            }
 
+        </div>
+        <div id="span">Date Placeholder</div>
     </div>
-    <div id="span">Date Placeholder</div>
 </div>
 
 
@@ -19,6 +21,9 @@
     public List<string> Dates { get; set; }
 
     public List<string> DatesStylePosition { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AllOtherAttributes { get; set; }
 
     protected override void OnParametersSet()
     {

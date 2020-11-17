@@ -1,0 +1,1 @@
+vips dzsave ..\Assets\1944.png ..\Assets\1944map --layout google --centre --background "234, 225, 211"

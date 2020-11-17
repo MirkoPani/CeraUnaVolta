@@ -34,7 +34,7 @@
     </div>
     <div class="customrow content">
         <div class="vignette">
-            <img id="scene" src="./img/1944.PNG" />
+            <div id="map"></div>
         </div>
     </div>
 </div>
@@ -58,7 +58,13 @@
 }
 
 <style>
-
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        background: #eae1d3;
+    }
   .box {
       display: flex;
       flex-flow: column;
@@ -77,9 +83,11 @@
         */
   }
 
-  .box .customrow.content {
-      flex: 1 1 auto;
-  }
+    .box .customrow.content {
+        position: relative;
+        flex: 1 1 auto;
+        height:90vh;
+    }
 
   .box .customrow.footer {
       flex: 0 1 40px;

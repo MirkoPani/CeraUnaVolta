@@ -25,8 +25,10 @@
                         </li>*@
                 </ul>
                 <span class="col-6">
-                    <TimeLine Dates=@Dates class="mb-2"></TimeLine>
+                    <TimeLine Dates=@Dates class="mb-2" @bind-SelectedDateIndex="@SelectedIndex"></TimeLine>
                 </span>
+
+                <button @onclick="(() => CallTestModal())">Call modal</button>
             </div>
         </nav>
 
@@ -39,22 +41,47 @@
     </div>
 </div>
 
+<ImageModal @ref="Modal"></ImageModal>
 
 @code {
-    private List<string> Dates = new List<string>() { "1944", "1957", "1980", "2000" };
+    /*
+    * Proprietà
+    */
+    private List<string> Dates = new List<string>() { "Test","1944", "1957", "1980", "2000" };
+
+    private int SelectedIndex { get; set; } = 0;
+
+    private ImageModal Modal { get; set; }
+
+    private static Action action;
 
     IJSObjectReference module;
 
+    /*
+    * Metodi
+    */
     protected override async void OnInitialized()
     {
         module = await JS
             .InvokeAsync<IJSObjectReference>("import", "./js/test.js");
 
-        await module.InvokeVoidAsync("Call");
+        await module.InvokeVoidAsync("InitializeTestMap");
 
+        //Assegna static action alla chiamata per aprire il modal
+        action = CallTestModal;
+    }
+
+    [JSInvokable]
+    public static void UpdateMessageCaller()
+    {
+        action.Invoke();
     }
 
 
+    protected void CallTestModal()
+    {
+        Modal.Open();
+    }
 }
 
 <style>

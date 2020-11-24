@@ -3,7 +3,9 @@
         <div id="line">
             @for (var i = 0; i < Dates.Count; i++)
             {
-                <div class="circle" id="circle0" style="@DatesStylePosition[i]">
+                //https://stackoverflow.com/questions/62830840/blazor-razor-onclick-event-with-index-parameter
+                int buffer = i;
+                <div class="@((i == SelectedDateIndex? "circle active" : "circle"))" style="@DatesStylePosition[i]" @onclick="(() => OnDateClick(buffer))">
                     <div class="date">@Dates[i]</div>
                 </div>
             }
@@ -17,14 +19,27 @@
 
 @code {
 
+    /*
+    * Proprietà
+    */
+
     [Parameter]
     public List<string> Dates { get; set; }
+
+    [Parameter]
+    public int SelectedDateIndex { get; set; }
+
+    [Parameter]
+    public EventCallback<int> SelectedDateChanged { get; set; }
 
     public List<string> DatesStylePosition { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> AllOtherAttributes { get; set; }
 
+    /*
+    * Metodi
+    */
     protected override void OnParametersSet()
     {
         if (Dates == null || Dates.Count == 0)
@@ -44,6 +59,16 @@
 
     }
 
+    protected Task SetSelectedDateIndex(int index)
+    {
+        SelectedDateIndex = index;
+        return SelectedDateChanged.InvokeAsync(SelectedDateIndex);
+    }
+
+    protected void OnDateClick(int index)
+    {
+        SetSelectedDateIndex(index);
+    }
 }
 
 <style>
@@ -85,6 +110,10 @@
         top: -7px;
         border: 3px solid white;
         cursor: pointer;
+    }
+
+    .circle.active {
+        background: #ffffff;
     }
 
     .date {

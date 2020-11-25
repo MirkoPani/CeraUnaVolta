@@ -7,7 +7,7 @@
   "theme_color": "#03173d",
   "icons": [
     {
-      "src": "icon-512-villaverla.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }

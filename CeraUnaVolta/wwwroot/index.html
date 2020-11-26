@@ -8,6 +8,8 @@
     <base href="/" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@400;800&display=swap" rel="stylesheet">
+
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
@@ -26,9 +28,12 @@
         <div class="container">
 
             <div class="row h-100">
-                <div class="offset-4 col-4 my-auto">
-                    <img class="img-fluid h-auto" src="logo.png" />
-                    <p class="text-center text-white">...Caricamento...</p>
+                <div class="offset-3 col-6 my-auto">
+                    <img class="img-fluid h-auto" src="logo-transparent.png" />
+                    <h1 class="loading-title text-center text-white font-weight-bolder display-4">C'era una volta</h1>
+                    <p class="lead text-center text-gold">
+                        ... Caricamento ...
+                    </p>
                 </div>
             </div>
         </div>
@@ -49,6 +54,16 @@
     .container{
         height:100%;
     }
+    .loading-title {
+        font-family: 'Lato', sans-serif;
+    }
+
+    @media (max-width: 768px) {
+        .loading-title {
+            font-size: 2em;
+        }
+    }
+
 </style>
 </body>
 

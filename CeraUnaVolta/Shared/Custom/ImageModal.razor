@@ -3,13 +3,14 @@
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
-                <h5 class="modal-title font-weight-bold w-100" id="exampleModalCenterTitle">Immagine di test</h5>
+                <h5 class="modal-title text-gold font-weight-bold w-100" id="exampleModalCenterTitle">@Image.Titolo</h5>
                 <button type="button" class="close" @onclick="(() => Close())">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <img class="img-fluid" src="img/test/test-image.jpeg" >
+            <div class="modal-body text-center">
+                <img class="img-fluid" src="@Image.Source" >
+                <p class="text-white">@Image.Didascalia</p>
             </div>
         </div>
     </div>
@@ -21,10 +22,19 @@
 }
 
 @code {
+
+    [Parameter]
+    public ImageData Image { get; set; }
+
     public Guid Guid = Guid.NewGuid();
     public string ModalDisplay = "none;";
     public string ModalClass = "";
     public bool ShowBackdrop = false;
+
+    protected override void OnInitialized()
+    {
+        Image = new ImageData();
+    }
 
     public void Open()
     {
@@ -53,10 +63,7 @@
         border-radius: unset;
     }
 
-    .modal-title {
-        color: #b38c52;
-    }
-
+    
     .modal-header .close {
         color:white;
     }

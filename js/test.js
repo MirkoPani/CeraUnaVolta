@@ -19,10 +19,11 @@
         minZoom: mapMinZoom,
         crs: L.CRS.MySimple,
         maxBoundsViscosity: 1.0,
-        bounds: mapBounds
+        bounds: mapBounds,
+        zoomControl: false
     }).setView([0, 0], mapMaxZoom);
 
-
+    map.attributionControl.setPrefix();
 
     window.latLngToPixels = function (latlng) {
         return window.map.project([latlng.lat, latlng.lng], window.map.getMaxZoom());
@@ -49,9 +50,13 @@
         maxBoundsViscosity: 1.0
     }).addTo(map);
 
-    L.marker([0, 0]).addTo(map).on('click', onClick);
+    L.marker([0, 0]).addTo(map).on('click', function () {
+        onClick(0);
+    });
 
-    L.marker([-128, 128]).addTo(map).bindPopup("center");
+    L.marker([-128, 128]).addTo(map).on('click', function () {
+        onClick(1);
+    });
 
     L.marker([294, -470]).addTo(map).bindPopup("Casa di Mirko");
 
@@ -101,8 +106,8 @@
     //    markerProps: {} //optional default {}
     //}).addTo(map);
 
-    function onClick(e) {
-        DotNet.invokeMethodAsync('CeraUnaVolta', 'UpdateMessageCaller');
+    function onClick(index) {
+        DotNet.invokeMethodAsync('CeraUnaVolta', 'UpdateMessageCaller', index);
     }
 
 

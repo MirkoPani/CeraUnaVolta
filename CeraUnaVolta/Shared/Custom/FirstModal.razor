@@ -1,0 +1,52 @@
+﻿<!-- Modal -->
+<div class="modal show" tabindex="-1" role="dialog" style="display:block; overflow: scroll;overflow-x:hidden">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title text-gold font-weight-bold w-100" id="exampleModalCenterTitle">Benvenuto su C'era una volta!</h5>
+                @*<button type="button" class="close" @onclick="(() => Close())">
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
+            </div>
+            <div class="modal-body text-center">
+                <img class="img-fluid" src="logo-transparent.png" style="width:15%;" />
+                <p>Ti diamo il benvenuto sul sito C'era una volta.</p>
+                <p>Qui, è possibile ammirare foto e mappe di Villaverla nel tempo.</p>
+                <p>Usa la barra temporale situata nella barra in alto per scorrere le diverse mappe!</p>
+                <p>Clicca sui segnaposti nella mappa per visualizzare foto di quel luogo.</p>
+                <p>Buon divertimento!</p>
+                <div class="form-check mt-5">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1" @bind-value="RememberMeCheck">
+                    <label class="form-check-label" for="exampleCheck1">Non visualizzare più</label>
+                </div>
+                <button class="btn btn-outline-light mt-1" value="Inizia!" @onclick="@(() => OnCloseCallback.InvokeAsync(RememberMeCheck))">Inizia!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade show"></div>
+
+
+@code {
+
+    [Parameter]
+    public EventCallback<bool> OnCloseCallback { get; set; }
+
+    private bool RememberMeCheck { get; set; }
+}
+<style>
+     .modal-content {
+        background-color: #343a40;
+        border-radius: unset;
+    }
+
+     .modal-body
+     {
+         color:white;
+     }
+
+    .modal-header .close {
+        color: white;
+    }
+</style>

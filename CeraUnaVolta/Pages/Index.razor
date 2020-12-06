@@ -1,60 +1,42 @@
 ﻿@layout FullPage
 @page "/"
 @inject IJSRuntime JS;
-@inject IImageService imgService  
+@inject IImageService imgService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
-<div class="box">
-    <div class="customrow header">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="#">
-                <img src="logo-transparent.png" width="40" height="40" alt="">
-               <span class="align-bottom">C'era una volta</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <form class="form-inline">
-                            <button class="btn btn-sm btn-outline-secondary" type="button">Info</button>
-                        </form>
-                    </li>
-                    @*<li class="nav-item">
-                            <a class="nav-link" href="#">Features</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Pricing</a>
-                        </li>*@
-                </ul>
-                <span class="col-6">
-                    <TimeLine Dates=@Dates class="mb-2" @bind-SelectedDateIndex="@SelectedIndex"></TimeLine>
-                </span>
+<div class="map-container">
+    <div id="map"></div>
+</div>
 
-                @*<button @onclick="(() => CallTestModal())">Call modal</button>*@
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-12 offset-md-2">
+                <TimeLine Dates=@Dates class="mb-2" @bind-SelectedDateIndex="@SelectedIndex"></TimeLine>
             </div>
-        </nav>
-
-
-    </div>
-    <div class="customrow content">
-        <div class="map-container">
-            <div id="map"></div>
         </div>
     </div>
 </div>
 
-<ImageModal @ref="@Modal" Image="@SelectedImage"></ImageModal>
+<ImageModal @ref="@Imagemodal" Image="@SelectedImage"></ImageModal>
+
+@if (IsFirstModalVisibile)
+{
+    <FirstModal @ref="@FirstModal" OnCloseCallback="@CloseFirstModal"></FirstModal>
+}
+
 
 @code {
     /*
     * Proprietà
     */
-    private List<string> Dates = new List<string>() { "Test","1944", "1957", "1980", "2000" };
+    private List<string> Dates = new List<string>() { "Test", "1944", "1957", "1980", "2000" };
 
     private int SelectedIndex { get; set; } = 0;
 
-    private ImageModal Modal { get; set; }
+    private ImageModal Imagemodal { get; set; }
+    private FirstModal FirstModal { get; set; }
+    private bool IsFirstModalVisibile { get; set; }
 
     private ImageData SelectedImage { get; set; } = new ImageData();
 
@@ -67,14 +49,28 @@
     */
     protected override async void OnInitialized()
     {
+        //Handle JS 
         module = await JS
-            .InvokeAsync<IJSObjectReference>("import", "./js/test.js");
+        .InvokeAsync<IJSObjectReference>("import", "./js/test.js");
 
         await module.InvokeVoidAsync("InitializeTestMap");
-
         //Assegna static action alla chiamata per aprire il modal
         action = CallTestModal;
+
+        //Handle modal di introduzione
+        var firstModalRememberMeIsPresent = await localStorage.ContainKeyAsync("FirstAccess");
+        IsFirstModalVisibile = !firstModalRememberMeIsPresent;
     }
+
+    protected async Task CloseFirstModal(bool rememberMe)
+    {
+        //Salva in localstorage in modo da non visualizzarlo ogni volta se richiesto
+        if (rememberMe)
+            await localStorage.SetItemAsync("FirstAccess", true);
+
+        IsFirstModalVisibile = false;
+    }
+
 
     [JSInvokable]
     public static void UpdateMessageCaller(int selectedIndex)
@@ -87,48 +83,27 @@
     {
         SelectedImage = imgService.Immagini[index];
         StateHasChanged();
-        Modal.Open();
+        Imagemodal.Open();
     }
 }
 
 <style>
-    .map-container{
-        height: 90vh;
+    .map-container {
+        height: 85vh;
+        position: relative;
     }
 
     #map {
         position: absolute;
         top: 0;
-        bottom: 0;
+        left: 0;
         width: 100%;
-        height: 90%;
+        height: 100%;
         background: #eae1d3;
     }
-  .box {
-      display: flex;
-      flex-flow: column;
-      height: 100%;
-  }
 
-  .box .customrow {
-  }
-
-    .box .customrow.header {
-        flex: 0 1 auto;
-        /* The above is shorthand for:
-        flex-grow: 0,
-        flex-shrink: 1,
-        flex-basis: auto
-        */
-        height: 56px;
+    .footer {
+        margin-top: 25px;
+        height: 50px;
     }
-
-    .box .customrow.content {
-        position: relative;
-        flex: 1 1 auto;
-    }
-
-  .box .customrow.footer {
-      flex: 0 1 40px;
-  }
 </style>

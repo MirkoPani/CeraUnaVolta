@@ -1,25 +1,26 @@
 ﻿@layout FullPage
 @page "/"
 @inject IJSRuntime JS;
-@inject IImageService imgService  
+@inject IImageService imgService
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <div class="map-container">
     <div id="map"></div>
 </div>
 
-    <div class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 col-12 offset-md-2">
-                    <TimeLine Dates=@Dates class="mb-2" @bind-SelectedDateIndex="@SelectedIndex"></TimeLine>
-                </div>
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-12 offset-md-2">
+                <TimeLine Dates=@Dates class="mb-2" @bind-SelectedDateIndex="@SelectedIndex"></TimeLine>
             </div>
         </div>
     </div>
+</div>
 
 <ImageModal @ref="@Imagemodal" Image="@SelectedImage"></ImageModal>
 
-@if(IsFirstModalVisibile)
+@if (IsFirstModalVisibile)
 {
     <FirstModal @ref="@FirstModal" OnCloseCallback="@CloseFirstModal"></FirstModal>
 }
@@ -29,13 +30,13 @@
     /*
     * Proprietà
     */
-    private List<string> Dates = new List<string>() { "Test","1944", "1957", "1980", "2000" };
+    private List<string> Dates = new List<string>() { "Test", "1944", "1957", "1980", "2000" };
 
     private int SelectedIndex { get; set; } = 0;
 
     private ImageModal Imagemodal { get; set; }
     private FirstModal FirstModal { get; set; }
-    private bool IsFirstModalVisibile { get; set; } = true;
+    private bool IsFirstModalVisibile { get; set; }
 
     private ImageData SelectedImage { get; set; } = new ImageData();
 
@@ -48,19 +49,25 @@
     */
     protected override async void OnInitialized()
     {
+        //Handle JS 
         module = await JS
         .InvokeAsync<IJSObjectReference>("import", "./js/test.js");
 
         await module.InvokeVoidAsync("InitializeTestMap");
-
         //Assegna static action alla chiamata per aprire il modal
         action = CallTestModal;
 
-        IsFirstModalVisibile = true;
+        //Handle modal di introduzione
+        var firstModalRememberMeIsPresent = await localStorage.ContainKeyAsync("FirstAccess");
+        IsFirstModalVisibile = !firstModalRememberMeIsPresent;
     }
 
-    protected void CloseFirstModal()
+    protected async Task CloseFirstModal(bool rememberMe)
     {
+        //Salva in localstorage in modo da non visualizzarlo ogni volta se richiesto
+        if (rememberMe)
+            await localStorage.SetItemAsync("FirstAccess", true);
+
         IsFirstModalVisibile = false;
     }
 
@@ -81,9 +88,9 @@
 }
 
 <style>
-    .map-container{
-        height: 90vh;
-        position:relative;
+    .map-container {
+        height: 85vh;
+        position: relative;
     }
 
     #map {
@@ -96,8 +103,7 @@
     }
 
     .footer {
-      margin-top:25px;
-      height:50px;
+        margin-top: 25px;
+        height: 50px;
     }
-
 </style>

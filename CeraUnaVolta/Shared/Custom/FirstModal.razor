@@ -16,10 +16,10 @@
                 <p>Clicca sui segnaposti nella mappa per visualizzare foto di quel luogo.</p>
                 <p>Buon divertimento!</p>
                 <div class="form-check mt-5">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1" @bind-value="RememberMeCheck">
                     <label class="form-check-label" for="exampleCheck1">Non visualizzare più</label>
                 </div>
-                <button class="btn btn-outline-light mt-1" value="Inizia!" @onclick="OnCloseCallback">Inizia!</button>
+                <button class="btn btn-outline-light mt-1" value="Inizia!" @onclick="@(() => OnCloseCallback.InvokeAsync(RememberMeCheck))">Inizia!</button>
             </div>
         </div>
     </div>
@@ -31,8 +31,9 @@
 @code {
 
     [Parameter]
-    public EventCallback OnCloseCallback { get; set; }
+    public EventCallback<bool> OnCloseCallback { get; set; }
 
+    private bool RememberMeCheck { get; set; }
 }
 <style>
      .modal-content {

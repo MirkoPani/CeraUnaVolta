@@ -12,7 +12,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-12 offset-md-2">
-                <TimeLine Dates=@Dates class="mb-2" @bind-SelectedDateIndex="@SelectedIndex"></TimeLine>
+                <CascadingValue Value="@SelectedDateIndex">
+                    <TimeLine Dates=@Dates class="mb-2" OnSelectedDateIndexChanged="OnSelectedDateChanged"></TimeLine>
+                </CascadingValue>
             </div>
         </div>
     </div>
@@ -32,7 +34,7 @@
     */
     private List<string> Dates = new List<string>() { "Test", "1944", "1957", "1980", "2000" };
 
-    private int SelectedIndex { get; set; } = 0;
+    private int SelectedDateIndex { get; set; }
 
     private ImageModal Imagemodal { get; set; }
     private FirstModal FirstModal { get; set; }
@@ -47,6 +49,27 @@
     /*
     * Metodi
     */
+
+    async Task OnSelectedDateChanged(int index)
+    {
+        SelectedDateIndex = index;
+        StateHasChanged();
+
+        switch (Dates[index])
+        {
+            case "Test":
+                await module.InvokeVoidAsync("InitializeTestMap");
+                break;
+            case "1980":
+                await module.InvokeVoidAsync("Initialize1980Map");
+                break;
+            default:
+                await module.InvokeVoidAsync("InitializeTestMap");
+                break;
+        }
+
+    }
+
     protected override async void OnInitialized()
     {
         //Handle JS 
@@ -93,17 +116,16 @@
         position: relative;
     }
 
-    #map {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #eae1d3;
+#map {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
     }
 
     .footer {
         margin-top: 25px;
-        height: 50px;
+    height: 50px;
     }
 </style>

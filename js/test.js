@@ -1,4 +1,17 @@
-﻿export function InitializeTestMap() {
+﻿var myMap = null;
+
+function ResetMap() {
+
+    if (myMap !== undefined && myMap !== null) {
+        myMap.off();
+        myMap.remove();
+    }
+}
+
+export function InitializeTestMap() {
+
+    ResetMap();
+
     var mapMinZoom = 0;
     var mapMaxZoom = 2;
 
@@ -14,7 +27,7 @@
         [1907 / 2, 1907 / 2]
     ]);
 
-    var map = L.map('map', {
+    myMap = L.map('map', {
         maxZoom: mapMaxZoom,
         minZoom: mapMinZoom,
         crs: L.CRS.MySimple,
@@ -23,7 +36,7 @@
         zoomControl: false
     }).setView([0, 0], mapMaxZoom);
 
-    map.attributionControl.setPrefix();
+    myMap.attributionControl.setPrefix();
 
     window.latLngToPixels = function (latlng) {
         return window.map.project([latlng.lat, latlng.lng], window.map.getMaxZoom());
@@ -37,7 +50,7 @@
       map.unproject([8576/2, 8576/2], mapMaxZoom));*/
 
 
-    map.fitBounds(mapBounds);
+    myMap.fitBounds(mapBounds);
 
     //L.rectangle(mapBounds).addTo(map);
 
@@ -48,19 +61,21 @@
         noWrap: true,
         tms: false,
         maxBoundsViscosity: 1.0
-    }).addTo(map);
+    }).addTo(myMap);
 
-    L.marker([0, 0]).addTo(map).on('click', function () {
+    L.marker([0, 0]).addTo(myMap).on('click', function () {
         onClick(0);
     });
 
-    L.marker([-128, 128]).addTo(map).on('click', function () {
+    L.marker([-128, 128]).addTo(myMap).on('click', function () {
         onClick(1);
     });
 
-    L.marker([294, -470]).addTo(map).bindPopup("Casa di Mirko");
+    L.marker([294, -470]).addTo(myMap).bindPopup("Casa di Mirko");
 
     var popup = L.popup();
+
+    document.getElementById("map").style.background = "#eae1d3";
 
     //function onMapClick(e) {
     //    popup
@@ -106,6 +121,82 @@
     //    markerProps: {} //optional default {}
     //}).addTo(map);
 
+    function onClick(index) {
+        DotNet.invokeMethodAsync('CeraUnaVolta', 'UpdateMessageCaller', index);
+    }
+
+
+}
+
+export function Initialize1980Map() {
+
+    ResetMap();
+
+    var mapMinZoom = 0;
+    var mapMaxZoom = 4;
+
+    L.CRS.MySimple = L.extend({}, L.CRS.Simple, {
+        // At zoom 0, tile 268x268px should represent the entire "world" of size 1202x1202.
+        // scale is therefore 1202 / 256 = 4.69 (use the reverse in transformation, i.e. 1/32).
+        // We want the center of tile 0/0/0 to be coordinates [0, 0], so offset is 1202 * 1/4.69 / 2 = 256 / 2 = 128.
+        transformation: new L.Transformation(1 / 7.45, 128, -1 / 7.45, 128)
+    });
+
+    var mapBounds = L.latLngBounds([
+        [-1907 / 2, -1907 / 2],
+        [1907 / 2, 1907 / 2]
+    ]);
+
+    myMap = L.map('map', {
+        maxZoom: mapMaxZoom,
+        minZoom: mapMinZoom,
+        crs: L.CRS.MySimple,
+        maxBoundsViscosity: 1.0,
+        bounds: mapBounds,
+        zoomControl: false
+    }).setView([0, 0], mapMaxZoom);
+
+    myMap.attributionControl.setPrefix();
+
+    window.latLngToPixels = function (latlng) {
+        return window.map.project([latlng.lat, latlng.lng], window.map.getMaxZoom());
+    };
+    window.pixelsToLatLng = function (x, y) {
+        return window.map.unproject([x, y], window.map.getMaxZoom());
+    };
+
+    /*var mapBounds = new L.LatLngBounds(
+      map.unproject([-8576/2, -8576/2], mapMaxZoom),
+      map.unproject([8576/2, 8576/2], mapMaxZoom));*/
+
+
+    myMap.fitBounds(mapBounds);
+
+    //L.rectangle(mapBounds).addTo(map);
+
+    L.tileLayer('maps/1980map/{z}/{y}/{x}.jpg', {
+        minZoom: mapMinZoom,
+        maxZoom: mapMaxZoom,
+        bounds: mapBounds,
+        noWrap: true,
+        tms: false,
+        maxBoundsViscosity: 1.0
+    }).addTo(myMap);
+
+    L.marker([0, 0]).addTo(myMap).on('click', function () {
+        onClick(0);
+    });
+
+    L.marker([-128, 128]).addTo(myMap).on('click', function () {
+        onClick(1);
+    });
+
+    L.marker([294, -470]).addTo(myMap).bindPopup("Casa di Mirko");
+
+    var popup = L.popup();
+
+    document.getElementById("map").style.background = "#acacac";
+    
     function onClick(index) {
         DotNet.invokeMethodAsync('CeraUnaVolta', 'UpdateMessageCaller', index);
     }

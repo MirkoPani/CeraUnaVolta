@@ -8,7 +8,7 @@
   "resources": {
     "assembly": {
       "Blazored.LocalStorage.dll": "sha256-+\/IJo9wLK9sTvL8ee9W9w8S1Gkj8rsf\/6yob0uUFAaM=",
-      "Microsoft.AspNetCore.Components.dll": "sha256-sDaQjQZoxlAagXKIA17aW2ILW3Dj\/5du79ZBKtrIb3I=",
+      "Microsoft.AspNetCore.Components.dll": "sha256-9o1gmRT9v5CdEiyzetqF3nQ8r4zjiX7bcVrZ9f1o2mU=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-O6\/9sCboh+3uiunBXsErREZVY3YkB56AXm1BbCgWpdM=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-jyPM6R2Q988oSbJyC3MxKsUmY3R\/G3DlinczzJQX1Sg=",
       "Microsoft.Extensions.Configuration.dll": "sha256-bZZ69\/58+BnN9G33FpTd2iXAdfgLbBnDUiiKxfaZ7IU=",
@@ -23,7 +23,7 @@
       "Microsoft.JSInterop.dll": "sha256-21OaCJJX+k6M+dYEFb5j1eJU+K+Sk6lvYDaRnsKqy8A=",
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-E1ZVZc8ppcbuan9B4K4NDw+BijA0pjKkIIwlnGerx9g=",
       "System.IO.Pipelines.dll": "sha256-CETD5tkXtiKEgbXyN\/lp0Ejf6LcHIhgeQIEyow2mhmY=",
-      "CeraUnaVolta.dll": "sha256-kFeKVgOlBGsYZs\/wqx7Nn98MBNiwwpOb\/GADL+QFBMA=",
+      "CeraUnaVolta.dll": "sha256-nAH5dudcl+a2sKGFPY7MwdhQCuu0cFfOnne3l\/LUPsI=",
       "System.Collections.Concurrent.dll": "sha256-PtEKG7EySW3D24qxeXaHvUdU5fBnminEdiAriwsEmBI=",
       "System.Collections.Immutable.dll": "sha256-De4ZDPYAOPE3Rqrsa9fm\/d3ep0pEy+fh8jyk11mSUvI=",
       "System.Collections.NonGeneric.dll": "sha256-8IO6PmMt1rS48xiTr92uM2MKLyB2urrceM5U\/R8kWM8=",
